@@ -47,3 +47,8 @@ temp/
 # ─── AI Model Cache ──────────────────────────────────────────────────────────
 .cache/
 huggingface/
+
+
+.venv/
+*.db
+backend/storage/

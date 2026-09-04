@@ -35,14 +35,47 @@ A production-grade Multimodal Retrieval-Augmented Generation (RAG) chatbot that 
 ```
 multimodal_rag/
 ├── backend/
-│   ├── main.py              # FastAPI app with all endpoints
-│   ├── requirements.txt     # Python dependencies
-│   └── .env                 # Environment variables (not committed)
+│   ├── app/
+│   │   ├── config.py              # Environment variables & constants
+│   │   ├── main.py                # FastAPI app entrypoint & middleware
+│   │   ├── db/
+│   │   │   └── database.py        # SQLite schema, migrations & image storage
+│   │   ├── models/
+│   │   │   └── schemas.py         # Pydantic request & response models
+│   │   ├── services/
+│   │   │   ├── pinecone_service.py     # Pinecone vector store & reranking
+│   │   │   ├── llm_service.py          # Gemini LLM generation & summarization
+│   │   │   ├── document_processing.py  # PDF partitioning & chunking
+│   │   │   ├── search_service.py       # Retrieval & hybrid search strategies
+│   │   │   ├── conversation_service.py # Conversation & message history
+│   │   │   └── ragas_eval.py           # RAGAS evaluation pipeline
+│   │   ├── routers/
+│   │   │   ├── documents.py       # Document upload, listing & deletion
+│   │   │   ├── query.py           # Multi-doc & hybrid RAG queries
+│   │   │   ├── conversations.py   # Conversation history endpoints
+│   │   │   ├── evaluation.py      # Evaluation API
+│   │   │   └── health.py          # Liveness & readiness check
+│   │   └── utils/
+│   │       ├── validation.py      # PDF file validation
+│   │       └── text_utils.py      # Citation parsing & context budgeting
+│   ├── storage/                   # Rendered page images
+│   ├── app_data.db                # SQLite database
+│   ├── requirements.txt           # Python dependencies
+│   └── .env                       # Environment variables (not committed)
 ├── frontend/
 │   ├── app/
-│   │   ├── page.tsx         # Main page with all components inline
-│   │   ├── layout.tsx       # Root layout
-│   │   └── globals.css      # Global styles
+│   │   ├── page.tsx               # Main chat application page
+│   │   ├── layout.tsx             # Root layout
+│   │   └── globals.css            # Global theme styles
+│   ├── components/
+│   │   ├── upload-panel.tsx       # PDF upload drop zone
+│   │   ├── documents-panel.tsx    # Document selection & deletion panel
+│   │   ├── chat-panel.tsx         # Chat stream, markdown & citations
+│   │   └── message-citations.tsx  # Interactive citation & page image viewer
+│   ├── types/
+│   │   └── index.ts               # Shared TypeScript interfaces
+│   ├── lib/
+│   │   └── api.ts                 # API client constants
 │   ├── package.json
 │   ├── next.config.mjs
 │   ├── tailwind.config.ts
@@ -127,8 +160,8 @@ Start the backend (in one terminal):
 
 ```bash
 cd backend
-source venv/bin/activate
-uvicorn main:app --reload --port 8000
+source venv/bin/activate  # Windows: venv\Scripts\activate
+uvicorn app.main:app --reload
 ```
 
 Start the frontend (in another terminal):
