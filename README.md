@@ -196,7 +196,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## 👤 Author
 
-**Sujal P.** — Final Year Student | AI / ML | Full-Stack Development
+**Sujal P.** — AI / ML Developer | Full-Stack Development
 
 ---
 
